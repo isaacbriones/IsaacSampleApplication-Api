@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlogService.cs" />
     <Compile Include="Cryptography\Base64StringCryptographyService.cs" />
     <Compile Include="Interfaces\ICryptographyService.cs" />
     <Compile Include="PersonService.cs" />

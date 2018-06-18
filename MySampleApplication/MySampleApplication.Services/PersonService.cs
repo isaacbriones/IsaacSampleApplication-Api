@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using MySampleApplication.Services.Interfaces;
 using MySampleApplication.Models.ViewModel;
+using System.Security.Principal;
 
 namespace MySampleApplication.Services
 {
     public class PersonService
     {
+        //private IPrincipal _principal;
         //private const int HASH_ITERATION_COUNT = 1;
         //private const int RAND_LENGTH = 15;
         //private ICryptographyService _cryptographyService;
@@ -23,7 +25,7 @@ namespace MySampleApplication.Services
         //{
         //    _cryptographyService = cryptographyService;
         //}
-        public int Insert(PersonAddRequest model)
+        public int? Insert(PersonAddRequest model)
         {
             string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
@@ -60,7 +62,7 @@ namespace MySampleApplication.Services
                 }
                 else
                 {
-                    return -1;
+                    return null;
                 }
 
             }
@@ -102,6 +104,31 @@ namespace MySampleApplication.Services
                 else
                 {
                     return null;
+                }
+            }
+        }
+
+        public void Update(PersonAddRequest model)
+        {
+            string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    string sqlCmd = "Person_Update";
+                    using (SqlCommand cmd = new SqlCommand(sqlCmd, conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        SqlParameter parm = new SqlParameter();
+
+                        cmd.Parameters.AddWithValue("@Id", model.Id);
+                        cmd.Parameters.AddWithValue("@FirstName", model.Name);
+                        cmd.Parameters.AddWithValue("@Email", model.Email);
+                        cmd.Parameters.AddWithValue("@Password", model.Password);
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }

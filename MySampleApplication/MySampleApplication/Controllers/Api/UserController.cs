@@ -22,9 +22,9 @@ namespace MySampleApplication.Controllers.Api
                 if (ModelState.IsValid)
                 {
                     PersonService svc = new PersonService();
-                    int id = svc.Insert(model);
+                    int? id = svc.Insert(model);
 
-                    ItemResponse<int> resp = new ItemResponse<int>();
+                    ItemResponse<int?> resp = new ItemResponse<int?>();
                     resp.Item = id;
 
                     return Request.CreateResponse(HttpStatusCode.OK, resp);
