@@ -46,6 +46,7 @@
     <Compile Include="Request\BlogAddRequest.cs" />
     <Compile Include="Request\LoginAddRequest.cs" />
     <Compile Include="Request\PersonAddRequest.cs" />
+    <Compile Include="Request\WebScrapeAddRequest.cs" />
     <Compile Include="Responses\BaseResponse.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="Responses\ItemResponse.cs" />
