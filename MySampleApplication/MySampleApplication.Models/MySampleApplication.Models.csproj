@@ -54,6 +54,7 @@
     <Compile Include="Responses\LoginResponse.cs" />
     <Compile Include="Responses\SuccessResponse.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\WebScrapeViewModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

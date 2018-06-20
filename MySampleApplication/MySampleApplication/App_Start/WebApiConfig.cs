@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Linq;
+using System.Net.Http.Headers;
 using System.Web.Http;
-using Microsoft.Owin.Security.OAuth;
+using System.Web.Http.Cors;
 using Newtonsoft.Json.Serialization;
 
 namespace MySampleApplication
@@ -13,18 +11,29 @@ namespace MySampleApplication
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            // Configure Web API to use only bearer token authentication.
-            config.SuppressDefaultHostAuthentication();
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            config.Filters.Add(new AuthorizeAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            // Enabling CORS
+            var cors = new EnableCorsAttribute("http://localhost:3000", "*", "*");
+            config.EnableCors(cors);
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //We remove the xml serilizer to make life easier. 
+            MediaTypeHeaderValue appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
+
+            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+
+            //This is what transforms all the Json into camelcase for us
+            json.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

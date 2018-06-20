@@ -7,19 +7,25 @@ using System.Web.Http;
 using MySampleApplication.Helpers;
 using MySampleApplication.Models.Request;
 using MySampleApplication.Models.Responses;
+using MySampleApplication.Models.ViewModel;
 
 namespace MySampleApplication.Controllers.Api
 {
     [RoutePrefix("api/webscraper")]
     public class WebScraperController : ApiController
     {
-        [HttpPost,AllowAnonymous]
-        public HttpResponseMessage GetData(WebScrapeAddRequest model)
+        [Route,HttpGet,AllowAnonymous]
+        public HttpResponseMessage GetData()
         {
-            WebScraper scraper = new WebScraper(model.Url);
-            ItemResponse<string> resp = new ItemResponse<string>();
-            resp.Item = scraper.GetContent("plan");
-            return Request.CreateResponse(System.Net.HttpStatusCode.OK, resp);
+            
+            //WebScraper scraper = new WebScraper();
+            //ItemResponse<WebScrapeViewModel> resp = new ItemResponse<WebScrapeViewModel>();
+            //resp.Item = new WebScrapeViewModel();
+            //resp.Item.ImageUrl = scraper.GetContent("//source");
+            //resp.Item.Title = scraper.GetContent("//figcaption");
+            //resp.Item.Description = scraper.GetContent("//figcaption/span");
+
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK, "hello");
         }
     }
 }
