@@ -8,8 +8,9 @@ namespace MySampleApplication.Models.ViewModel
 {
    public class WebScrapeViewModel
     {
-        public List<string> ImageUrl { get; set; }
-        public List<string> Title { get; set; }
-        public List<string> Description { get; set; }
+        public string ImageUrl { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string titleLink { get; set; }
     }
 }

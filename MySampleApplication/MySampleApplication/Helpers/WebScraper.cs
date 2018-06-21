@@ -14,7 +14,7 @@ namespace MySampleApplication.Helpers
 
         private HtmlDocument _htmlDocument;
 
-        public List<string> GetContent(string propName)
+        public List<WebScrapeViewModel> GetContent()
         {
             HtmlWeb htmlWeb = new HtmlWeb();
             HtmlDocument htmlDocument = htmlWeb.Load(GetUrl);
@@ -24,54 +24,20 @@ namespace MySampleApplication.Helpers
                 this.loadHtml();
             }
 
-            var tags = _htmlDocument.DocumentNode.SelectNodes("//div");
-            List<string> content = new List<string>();
-            foreach (var tag in tags)
+            var tags = _htmlDocument.DocumentNode.SelectNodes("//*[contains(@class,'plan ')]");
+            List<WebScrapeViewModel> contentList = new List<WebScrapeViewModel>();
+            foreach (var item in tags)
             {
-                if (propName == "//source")
-                {
-                    var test = tag.SelectNodes(propName);
-                    foreach (var item in test)
-                    {
-                        var o = item.Attributes["srcset"].Value;
-                        content.Add(o);
-                    }
-                    break;
-                }
-                if (propName == "//figcaption")
-                {
-                    var title = tag.SelectNodes(propName);
-                    foreach (var item in title)
-                    {
-                        var p = item.SelectNodes("//span[@class='plan__info__value plan__info__value--bold']");
-                        foreach (var pp in p)
-                        {
-                            var w = pp.InnerHtml;
-                            content.Add(w);
-                        }
-                        break;
-                    }
-
-                    break;
-                }
-                if (propName == "//figcaption/span")
-                {
-                    var desc = tag.SelectNodes("//figcaption");
-                    foreach (var item in desc)
-                    {
-                        var p = item.SelectNodes("//div[@class='plan__info']");
-                        foreach (var pp in p)
-                        {
-                            var w = pp.InnerText;
-                            content.Add(w);
-                        }
-                        break;
-                    }
-
-                    break;
-                }
+                WebScrapeViewModel model = new WebScrapeViewModel();
+                model.ImageUrl = item.SelectSingleNode(".//img").GetAttributeValue("srcset", "not found");
+                model.Title = item.SelectSingleNode(".//span[@class='plan__info__value plan__info__value--bold']").InnerHtml;
+                model.Description = item.SelectSingleNode("//span[@class='plan__info__value']").InnerHtml + " " +
+                    item.SelectSingleNode("//span[@class='plan__info__delimiter']").InnerHtml + " " +
+                    item.SelectSingleNode("//*[@id='FAWP_PLAN_THUMBNAIL_0']/figcaption/div[2]/span[3]").InnerHtml;
+                model.titleLink = item.SelectSingleNode(".//a[@class='plan__link']").GetAttributeValue("href", "nada");
+                contentList.Add(model);
             }
-                return content;
+            return contentList;
         }
         private void loadHtml()
         {

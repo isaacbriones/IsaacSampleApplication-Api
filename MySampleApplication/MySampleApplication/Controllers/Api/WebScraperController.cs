@@ -17,15 +17,16 @@ namespace MySampleApplication.Controllers.Api
         [Route,HttpGet,AllowAnonymous]
         public HttpResponseMessage GetData()
         {
-            
-            //WebScraper scraper = new WebScraper();
-            //ItemResponse<WebScrapeViewModel> resp = new ItemResponse<WebScrapeViewModel>();
+
+            WebScraper scraper = new WebScraper();
+            ItemsResponse<WebScrapeViewModel> resp = new ItemsResponse<WebScrapeViewModel>();
+            resp.Items = scraper.GetContent();
             //resp.Item = new WebScrapeViewModel();
             //resp.Item.ImageUrl = scraper.GetContent("//source");
             //resp.Item.Title = scraper.GetContent("//figcaption");
             //resp.Item.Description = scraper.GetContent("//figcaption/span");
 
-            return Request.CreateResponse(System.Net.HttpStatusCode.OK, "hello");
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK, resp);
         }
     }
 }
