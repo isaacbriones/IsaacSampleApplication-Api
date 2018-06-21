@@ -84,6 +84,7 @@ namespace MySampleApplication.Services
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@Email", model.Email);
+                        cmd.Parameters.AddWithValue("@Password", model.Password);
 
                         SqlDataReader reader = cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
                         if (reader.Read())

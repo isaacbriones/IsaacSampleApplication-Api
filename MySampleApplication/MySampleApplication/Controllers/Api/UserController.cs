@@ -64,5 +64,11 @@ namespace MySampleApplication.Controllers.Api
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
+
+        [Route("logout"), HttpGet, AllowAnonymous]
+        public HttpResponseMessage Logout()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, new MySampleApplication.Models.Responses.SuccessResponse());
+        }
     }
 }
