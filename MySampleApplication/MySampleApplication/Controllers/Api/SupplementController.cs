@@ -78,7 +78,7 @@ namespace MySampleApplication.Controllers.Api
             }
         }
 
-        [Route,HttpGet,AllowAnonymous]
+        [Route("getall"),HttpGet,AllowAnonymous]
         public HttpResponseMessage GetAll()
         {
             try

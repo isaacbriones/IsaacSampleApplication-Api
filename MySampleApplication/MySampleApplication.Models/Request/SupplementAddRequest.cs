@@ -10,6 +10,7 @@ namespace MySampleApplication.Models.Request
     {
         public int Id { get; set; }
         public string SupplementName { get; set; }
+        public string SupplementImageUrl { get; set; }
         public string Brand { get; set; }
         public string Description { get; set; }
         public string Price { get; set; }

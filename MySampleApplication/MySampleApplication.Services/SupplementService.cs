@@ -27,6 +27,7 @@ namespace MySampleApplication.Services
 
                         cmd.Parameters.Add(parm);
                         cmd.Parameters.AddWithValue("@SupplementName", model.SupplementName);
+                        cmd.Parameters.AddWithValue("@SupplementImageUrl", model.SupplementImageUrl);
                         cmd.Parameters.AddWithValue("@Brand", model.Brand);
                         cmd.Parameters.AddWithValue("@Description", model.Description);
                         cmd.Parameters.AddWithValue("@Price", model.Price);
@@ -61,6 +62,7 @@ namespace MySampleApplication.Services
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Id", model.Id);
                         cmd.Parameters.AddWithValue("@SupplementName", model.SupplementName);
+                        cmd.Parameters.AddWithValue("@SupplementImageUrl", model.SupplementImageUrl);
                         cmd.Parameters.AddWithValue("@Brand", model.Brand);
                         cmd.Parameters.AddWithValue("@Description", model.Description);
                         cmd.Parameters.AddWithValue("@Price", model.Price);
@@ -85,13 +87,14 @@ namespace MySampleApplication.Services
                     using (SqlCommand cmd = new SqlCommand(sqlCmd, conn))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Id", model.Id);
+                        cmd.Parameters.AddWithValue("@Id",id);
                         SqlDataReader reader = cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
                         if (reader.Read())
                         {
                             int index = 0;
                             viewModel.Id = reader.GetInt32(index++);
                             viewModel.SupplementName = reader.GetString(index++);
+                            viewModel.SupplementImageUrl = reader.GetString(index++);
                             viewModel.Brand = reader.GetString(index++);
                             viewModel.Description = reader.GetString(index++);
                             viewModel.Price = reader.GetString(index++);
@@ -120,7 +123,7 @@ namespace MySampleApplication.Services
                 conn.Open();
                 if (conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sqlCmd = "Blog_GetAll";
+                    string sqlCmd = "Supplemnt_GetAll";
                     using (SqlCommand cmd = new SqlCommand(sqlCmd, conn))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -132,6 +135,7 @@ namespace MySampleApplication.Services
                             int index = 0;
                             viewModel.Id = reader.GetInt32(index++);
                             viewModel.SupplementName = reader.GetString(index++);
+                            viewModel.SupplementImageUrl = reader.GetString(index++);
                             viewModel.Brand = reader.GetString(index++);
                             viewModel.Description = reader.GetString(index++);
                             viewModel.Price = reader.GetString(index++);
