@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="BlogService.cs" />
     <Compile Include="Cryptography\Base64StringCryptographyService.cs" />
+    <Compile Include="FileUploadService.cs" />
     <Compile Include="Interfaces\ICryptographyService.cs" />
     <Compile Include="PersonService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

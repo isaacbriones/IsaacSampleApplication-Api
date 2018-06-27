@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using MySampleApplication.Models.Request;
+using MySampleApplication.Models.ViewModel;
 
 namespace MySampleApplication.Services
 {
-    public class SupplementService
+    public class FileUploadService
     {
-        public int? Insert(SupplementAddRequest model)
+        public int? Insert(FileUploadAddRequest model)
         {
             string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
@@ -14,7 +15,7 @@ namespace MySampleApplication.Services
                 conn.Open();
                 if (conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sqlCmd = "Supplemnt_Insert";
+                    string sqlCmd = "FileUpload_Insert";
 
                     using (SqlCommand cmd = new SqlCommand(sqlCmd, conn))
                     {
@@ -26,11 +27,10 @@ namespace MySampleApplication.Services
                         parm.ParameterName = "@Id";
 
                         cmd.Parameters.Add(parm);
-                        cmd.Parameters.AddWithValue("@SupplementName", model.SupplementName);
-                        cmd.Parameters.AddWithValue("@SupplementImageUrl", model.SupplementImageUrl);
-                        cmd.Parameters.AddWithValue("@Brand", model.Brand);
-                        cmd.Parameters.AddWithValue("@Description", model.Description);
-                        cmd.Parameters.AddWithValue("@Price", model.Price);
+                        cmd.Parameters.AddWithValue("@FileTypeId", model.FileTypeId);
+                        cmd.Parameters.AddWithValue("@UserFileName", model.UserFileName);
+                        cmd.Parameters.AddWithValue("@SystemFileName", model.SystemFileName);
+                        cmd.Parameters.AddWithValue("@Location", model.Location);
 
                         cmd.ExecuteNonQuery();
 
@@ -46,58 +46,30 @@ namespace MySampleApplication.Services
             }
         }
 
-        public void Update(SupplementAddRequest model)
+        public FileUploadAddRequest SelectById(int id)
         {
+            FileUploadAddRequest viewModel = new FileUploadAddRequest();
             string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
                 if (conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sqlCmd = "Supplemnt_Update";
-
-                    using (SqlCommand cmd = new SqlCommand(sqlCmd, conn))
-                    {
-
-                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Id", model.Id);
-                        cmd.Parameters.AddWithValue("@SupplementName", model.SupplementName);
-                        cmd.Parameters.AddWithValue("@SupplementImageUrl", model.SupplementImageUrl);
-                        cmd.Parameters.AddWithValue("@Brand", model.Brand);
-                        cmd.Parameters.AddWithValue("@Description", model.Description);
-                        cmd.Parameters.AddWithValue("@Price", model.Price);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-            }
-        }
-
-        public SupplementAddRequest SelectById(int id)
-        {
-            SupplementAddRequest viewModel = new SupplementAddRequest();
-            string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-                if (conn.State == System.Data.ConnectionState.Open)
-                {
-                    string sqlCmd = "Supplemnt_SelectById";
+                    string sqlCmd = "FileUpload_SelectById";
 
                     using (SqlCommand cmd = new SqlCommand(sqlCmd, conn))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Id",id);
+                        cmd.Parameters.AddWithValue("@Id", id);
                         SqlDataReader reader = cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
                         if (reader.Read())
                         {
                             int index = 0;
                             viewModel.Id = reader.GetInt32(index++);
-                            viewModel.SupplementName = reader.GetString(index++);
-                            viewModel.SupplementImageUrl = reader.GetString(index++);
-                            viewModel.Brand = reader.GetString(index++);
-                            viewModel.Description = reader.GetString(index++);
-                            viewModel.Price = reader.GetString(index++);
+                            viewModel.FileTypeId = reader.GetInt32(index++);
+                            viewModel.UserFileName = reader.GetString(index++);
+                            viewModel.SystemFileName = reader.GetString(index++);
+                            viewModel.Location = reader.GetString(index++);
 
                             return viewModel;
                         }
@@ -114,16 +86,16 @@ namespace MySampleApplication.Services
             }
         }
 
-        public List<SupplementAddRequest> SelectAll()
+        public List<FileUploadViewModel> SelectAll()
         {
-            List<SupplementAddRequest> result = new List<SupplementAddRequest>();
+            List<FileUploadViewModel> result = new List<FileUploadViewModel>();
             string connStr = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
                 if (conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sqlCmd = "Supplemnt_GetAll";
+                    string sqlCmd = "FileUpload_SelectAll";
                     using (SqlCommand cmd = new SqlCommand(sqlCmd, conn))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -131,14 +103,13 @@ namespace MySampleApplication.Services
                         SqlDataReader reader = cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
                         while (reader.Read())
                         {
-                            SupplementAddRequest viewModel = new SupplementAddRequest();
+                            FileUploadViewModel viewModel = new FileUploadViewModel();
                             int index = 0;
                             viewModel.Id = reader.GetInt32(index++);
-                            viewModel.SupplementName = reader.GetString(index++);
-                            viewModel.SupplementImageUrl = reader.GetString(index++);
-                            viewModel.Brand = reader.GetString(index++);
-                            viewModel.Description = reader.GetString(index++);
-                            viewModel.Price = reader.GetString(index++);
+                            viewModel.IconUrl = reader.GetString(index++);
+                            viewModel.UserFileName = reader.GetString(index++);
+                            viewModel.SystemFileName = reader.GetString(index++);
+                            viewModel.Location = reader.GetString(index++);
                             result.Add(viewModel);
                         }
                         return result;
@@ -159,7 +130,7 @@ namespace MySampleApplication.Services
                 conn.Open();
                 if (conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sqlCmd = "Supplemnt_Delete";
+                    string sqlCmd = "FileUpload_Delete";
 
                     using (SqlCommand cmd = new SqlCommand(sqlCmd, conn))
                     {
